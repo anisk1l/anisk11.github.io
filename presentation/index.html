@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Web Technologies – Assignment 2 | Anis Messaoudi</title>
+
+  <!-- Reveal.js CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <!-- Non-default theme: Moon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/moon.css" id="theme">
+  <!-- Highlight.js for code blocks -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css">
+
+  <style>
+    /* ── Custom overrides on top of Moon theme ── */
+    :root {
+      --accent: #38d9a9;
+      --accent2: #f9c74f;
+      --dark-bg: #0d1117;
+    }
+
+    .reveal {
+      font-family: 'Georgia', serif;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.03em;
+    }
+
+    .reveal h1 { color: var(--accent); text-shadow: 0 0 30px rgba(56,217,169,0.4); }
+    .reveal h2 { color: var(--accent2); }
+    .reveal h3 { color: #aad4f5; font-size: 0.95em; }
+
+    /* Title slide special styling */
+    .title-slide .subtitle {
+      color: #8ecae6;
+      font-style: italic;
+      font-size: 1.1em;
+      margin-top: 0.5em;
+    }
+    .title-slide .meta {
+      margin-top: 2em;
+      font-size: 0.65em;
+      color: #aaa;
+      font-family: 'Courier New', monospace;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 1em;
+      letter-spacing: 0.05em;
+    }
+
+    /* Badge chips */
+    .chip {
+      display: inline-block;
+      background: rgba(56,217,169,0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 3px 14px;
+      font-size: 0.55em;
+      font-family: 'Courier New', monospace;
+      margin: 0 4px;
+      vertical-align: middle;
+    }
+    .chip.yellow { background: rgba(249,199,79,0.15); border-color: var(--accent2); color: var(--accent2); }
+
+    /* Comparison table */
+    .cmp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.65em;
+      margin-top: 0.8em;
+    }
+    .cmp-table th {
+      background: rgba(56,217,169,0.2);
+      color: var(--accent);
+      padding: 8px 12px;
+      font-family: 'Courier New', monospace;
+      text-align: left;
+      border-bottom: 2px solid var(--accent);
+    }
+    .cmp-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: #ddd;
+    }
+    .cmp-table tr:hover td { background: rgba(255,255,255,0.04); }
+    .yes  { color: #38d9a9; font-weight: bold; }
+    .no   { color: #f06060; }
+    .meh  { color: #f9c74f; }
+
+    /* Timeline dots */
+    .timeline { list-style: none; padding: 0; margin: 0; }
+    .timeline li {
+      display: flex; align-items: flex-start;
+      gap: 14px; margin-bottom: 0.7em; font-size: 0.65em;
+    }
+    .timeline li .dot {
+      min-width: 10px; height: 10px;
+      border-radius: 50%; background: var(--accent);
+      margin-top: 5px; box-shadow: 0 0 8px var(--accent);
+    }
+    .timeline li .yr { color: var(--accent2); font-family: 'Courier New', monospace; min-width: 55px; }
+    .timeline li .desc { color: #ccc; }
+
+    /* Two column layout */
+    .cols { display: flex; gap: 2em; align-items: flex-start; }
+    .cols .col { flex: 1; }
+
+    /* Code-like box */
+    .codebox {
+      background: #0d1117;
+      border: 1px solid rgba(56,217,169,0.3);
+      border-radius: 8px;
+      padding: 0.8em 1.2em;
+      font-family: 'Courier New', monospace;
+      font-size: 0.55em;
+      color: #cdd9e5;
+      text-align: left;
+      line-height: 1.7;
+    }
+    .codebox .key { color: #f9c74f; }
+    .codebox .val { color: #38d9a9; }
+    .codebox .cm  { color: #6e7681; }
+
+    /* SSG card grid */
+    .ssg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; margin-top: 0.6em; }
+    .ssg-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 1em;
+      text-align: left;
+      font-size: 0.62em;
+    }
+    .ssg-card .name { font-family: 'Courier New', monospace; color: var(--accent2); font-size: 1.2em; font-weight: bold; }
+    .ssg-card .lang { color: #8ecae6; font-size: 0.85em; margin: 2px 0 6px; }
+    .ssg-card .desc { color: #bbb; }
+
+    /* Highlight box */
+    .hbox {
+      background: rgba(56,217,169,0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 0.6em 1em;
+      margin: 0.5em 0;
+      font-size: 0.65em;
+      color: #ddd;
+      text-align: left;
+    }
+
+    /* Final slide links */
+    .link-pill {
+      display: inline-block;
+      margin: 0.3em 0.4em;
+      padding: 0.4em 1.2em;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      color: var(--accent);
+      font-family: 'Courier New', monospace;
+      font-size: 0.6em;
+      text-decoration: none;
+    }
+    .link-pill:hover { background: rgba(56,217,169,0.15); }
+
+    /* Vertical slide indicator */
+    .v-hint {
+      font-size: 0.4em;
+      color: rgba(255,255,255,0.3);
+      margin-top: 1.5em;
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 1 – Title (Horizontal)
+  ═══════════════════════════════════════════════ -->
+  <section class="title-slide">
+    <h1>Static Site Generators</h1>
+    <p class="subtitle">Building the Modern Web Without a Database</p>
+
+    <div style="margin-top:1.4em; font-size:0.65em; color:#aad4f5; font-family:'Courier New',monospace;">
+      <span class="chip">Jekyll</span>
+      <span class="chip">Hugo</span>
+      <span class="chip">Next.js</span>
+      <span class="chip yellow">GitHub Pages</span>
+      <span class="chip yellow">Reveal.js</span>
+    </div>
+
+    <div class="meta">
+      Internet Technologies · Assignment 2 &nbsp;|&nbsp;
+      Anis Messaoudi (78060) &nbsp;|&nbsp;
+      GitHub: anisk11 &nbsp;|&nbsp; May 2026
+    </div>
+    <p class="v-hint">↓ scroll down for deep dives · → for next topic</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 2 – What is an SSG? (Horizontal)
+       + vertical sub-slides
+  ═══════════════════════════════════════════════ -->
+  <section>
+
+    <!-- 2.0 – overview -->
+    <section>
+      <h2>What is a Static Site Generator?</h2>
+      <div class="cols" style="margin-top:0.8em;">
+        <div class="col">
+          <div class="hbox">
+            An <strong>SSG</strong> takes plain-text source files (Markdown, HTML templates,
+            YAML config) and <em>compiles</em> them into a folder of pure HTML, CSS &amp; JS —
+            ready to be served from any web host.
+          </div>
+          <div class="hbox" style="margin-top:0.8em; border-color: var(--accent2);">
+            <strong>No database. No PHP. No runtime.</strong><br>
+            Just files on a CDN — blazing fast and secure.
+          </div>
+        </div>
+        <div class="col">
+          <div class="codebox">
+            <span class="cm"># Build pipeline</span><br>
+            <span class="key">Source</span>: Markdown + YAML<br>
+            <span class="key">Templates</span>: Liquid / Nunjucks<br>
+            <span class="key">Output</span>: <span class="val">static HTML/CSS/JS</span><br>
+            <span class="key">Deploy</span>: <span class="val">GitHub Pages / Netlify</span>
+          </div>
+        </div>
+      </div>
+      <p class="v-hint">↓ see the history</p>
+    </section>
+
+    <!-- 2.1 – History timeline -->
+    <section>
+      <h2>A Brief History</h2>
+      <ul class="timeline" style="margin-top:0.8em;">
+        <li><div class="dot"></div><span class="yr">1991</span><div class="desc">Tim Berners-Lee writes the first website — a static HTML file</div></li>
+        <li><div class="dot"></div><span class="yr">1995</span><div class="desc">CGI scripts bring dynamic pages; static sites seen as "too simple"</div></li>
+        <li><div class="dot"></div><span class="yr">2008</span><div class="desc"><strong>Jekyll</strong> released by Tom Preston-Werner (GitHub co-founder) — SSGs reborn</div></li>
+        <li><div class="dot"></div><span class="yr">2013</span><div class="desc">Hugo launches with sub-millisecond build speeds</div></li>
+        <li><div class="dot"></div><span class="yr">2016</span><div class="desc">JAMstack coined — JS, APIs, Markup paradigm takes hold</div></li>
+        <li><div class="dot"></div><span class="yr">2020s</span><div class="desc">Next.js, Astro, SvelteKit blur line between SSG and framework</div></li>
+      </ul>
+    </section>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 3 – How Jekyll Works (Horizontal)
+       + vertical sub-slides
+  ═══════════════════════════════════════════════ -->
+  <section>
+
+    <!-- 3.0 – Jekyll overview -->
+    <section>
+      <h2>Jekyll — Deep Dive</h2>
+      <div class="cols" style="margin-top:0.6em;">
+        <div class="col">
+          <div class="codebox">
+            <span class="cm"># _config.yml</span><br>
+            <span class="key">title</span>: <span class="val">My Website</span><br>
+            <span class="key">theme</span>: <span class="val">minima</span><br>
+            <span class="key">plugins</span>:<br>
+            &nbsp;&nbsp;- jekyll-feed<br>
+            &nbsp;&nbsp;- jekyll-seo-tag<br><br>
+            <span class="cm"># Markdown page front matter</span><br>
+            <span class="key">---</span><br>
+            <span class="key">layout</span>: <span class="val">page</span><br>
+            <span class="key">title</span>: <span class="val">About</span><br>
+            <span class="key">permalink</span>: <span class="val">/about/</span><br>
+            <span class="key">---</span>
+          </div>
+        </div>
+        <div class="col" style="font-size:0.65em; color:#ccc; line-height:1.8;">
+          <p>✦ Written in <strong style="color:var(--accent2)">Ruby</strong></p>
+          <p>✦ Native support on <strong style="color:var(--accent)">GitHub Pages</strong></p>
+          <p>✦ Uses <strong style="color:var(--accent)">Liquid</strong> templating language</p>
+          <p>✦ Content in <strong style="color:var(--accent2)">Markdown</strong> with YAML front matter</p>
+          <p>✦ Collections, data files, plugins ecosystem</p>
+        </div>
+      </div>
+      <p class="v-hint">↓ see the file structure</p>
+    </section>
+
+    <!-- 3.1 – Jekyll file structure -->
+    <section>
+      <h2>Jekyll Project Structure</h2>
+      <div class="codebox" style="font-size:0.6em; margin-top:0.8em; line-height:1.9;">
+        my-site/<br>
+        <span class="val">├── _config.yml</span>&nbsp;&nbsp;&nbsp;<span class="cm">← site-wide settings</span><br>
+        <span class="val">├── _layouts/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">← HTML templates (default.html, page.html)</span><br>
+        <span class="val">├── _includes/</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">← reusable partials (header, footer)</span><br>
+        <span class="val">├── _posts/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">← blog posts: YYYY-MM-DD-title.md</span><br>
+        <span class="val">├── assets/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">← images, CSS, JS</span><br>
+        <span class="val">├── index.md</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">← home page</span><br>
+        <span class="val">└── _site/</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">← compiled output (auto-generated)</span>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 4 – SSG Comparison (Horizontal)
+  ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Comparing Popular SSGs</h2>
+
+    <div class="ssg-grid" style="margin-bottom:0.8em;">
+      <div class="ssg-card">
+        <div class="name">Jekyll</div>
+        <div class="lang">Ruby · 2008</div>
+        <div class="desc">The original. Built into GitHub Pages. Great for blogs and docs.</div>
+      </div>
+      <div class="ssg-card">
+        <div class="name">Hugo</div>
+        <div class="lang">Go · 2013</div>
+        <div class="desc">Extremely fast builds. Ideal for large content-heavy sites.</div>
+      </div>
+      <div class="ssg-card">
+        <div class="name">Next.js</div>
+        <div class="lang">JavaScript · 2016</div>
+        <div class="desc">React-based. Supports SSG, SSR and ISR. Full-stack capable.</div>
+      </div>
+      <div class="ssg-card">
+        <div class="name">Eleventy</div>
+        <div class="lang">JavaScript · 2018</div>
+        <div class="desc">Zero-config. Supports 10+ template languages. Highly flexible.</div>
+      </div>
+    </div>
+
+    <table class="cmp-table">
+      <tr>
+        <th>Feature</th><th>Jekyll</th><th>Hugo</th><th>Next.js</th><th>Eleventy</th>
+      </tr>
+      <tr>
+        <td>Build Speed</td>
+        <td class="meh">Moderate</td>
+        <td class="yes">⚡ Fastest</td>
+        <td class="meh">Moderate</td>
+        <td class="yes">Fast</td>
+      </tr>
+      <tr>
+        <td>GitHub Pages Native</td>
+        <td class="yes">✔ Yes</td>
+        <td class="no">✘ No</td>
+        <td class="no">✘ No</td>
+        <td class="no">✘ No</td>
+      </tr>
+      <tr>
+        <td>Learning Curve</td>
+        <td class="yes">Low</td>
+        <td class="meh">Medium</td>
+        <td class="no">High</td>
+        <td class="yes">Low</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 5 – GitHub Pages Deployment (Horizontal)
+       + vertical sub-slide
+  ═══════════════════════════════════════════════ -->
+  <section>
+
+    <!-- 5.0 -->
+    <section>
+      <h2>Deploying to GitHub Pages</h2>
+
+      <div class="cols" style="margin-top:0.6em;">
+        <div class="col">
+          <div style="font-size:0.65em; color:#ccc; line-height:2em; text-align:left;">
+            <div><span style="color:var(--accent2); font-family:'Courier New',monospace;">Step 1</span> — Create a repo named <code style="color:var(--accent)">username.github.io</code></div>
+            <div><span style="color:var(--accent2); font-family:'Courier New',monospace;">Step 2</span> — Push Jekyll source to <code style="color:var(--accent)">main</code> branch</div>
+            <div><span style="color:var(--accent2); font-family:'Courier New',monospace;">Step 3</span> — GitHub Actions auto-builds Jekyll</div>
+            <div><span style="color:var(--accent2); font-family:'Courier New',monospace;">Step 4</span> — Site is live at <code style="color:var(--accent)">https://username.github.io</code></div>
+            <div><span style="color:var(--accent2); font-family:'Courier New',monospace;">Step 5</span> — Every <code>git push</code> triggers a redeploy</div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="hbox">
+            🆓 Free hosting · HTTPS included · Custom domains supported
+          </div>
+          <div class="hbox" style="border-color:var(--accent2); margin-top:0.6em;">
+            Zero DevOps required — GitHub handles the entire build &amp; deploy pipeline automatically.
+          </div>
+        </div>
+      </div>
+      <p class="v-hint">↓ Reveal.js setup</p>
+    </section>
+
+    <!-- 5.1 – Reveal.js on GitHub Pages -->
+    <section>
+      <h2>Adding Reveal.js to GitHub Pages</h2>
+      <div class="codebox" style="margin-top:0.6em; font-size:0.58em; line-height:1.8;">
+        <span class="cm">&lt;!-- Option A: CDN (no install needed) --&gt;</span><br>
+        &lt;<span class="key">link</span> rel=<span class="val">"stylesheet"</span>
+          href=<span class="val">"https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css"</span>&gt;<br>
+        &lt;<span class="key">link</span> rel=<span class="val">"stylesheet"</span>
+          href=<span class="val">"https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css"</span>&gt;<br><br>
+        &lt;<span class="key">div</span> class=<span class="val">"reveal"</span>&gt;<br>
+        &nbsp;&nbsp;&lt;<span class="key">div</span> class=<span class="val">"slides"</span>&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="key">section</span>&gt;Slide 1&lt;/<span class="key">section</span>&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="key">section</span>&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="key">section</span>&gt;Vertical A&lt;/<span class="key">section</span>&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="key">section</span>&gt;Vertical B&lt;/<span class="key">section</span>&gt;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="key">section</span>&gt;<br>
+        &nbsp;&nbsp;&lt;/<span class="key">div</span>&gt;<br>
+        &lt;/<span class="key">div</span>&gt;
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 6 – CMS vs SSG (Horizontal)
+  ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>CMS vs SSG — When to Choose?</h2>
+    <table class="cmp-table" style="margin-top:1em; font-size:0.62em;">
+      <tr>
+        <th>Criterion</th>
+        <th>Traditional CMS (WordPress)</th>
+        <th>Static Site Generator</th>
+      </tr>
+      <tr>
+        <td>Speed</td>
+        <td class="no">Server renders per request</td>
+        <td class="yes">Pre-built files, CDN-ready</td>
+      </tr>
+      <tr>
+        <td>Security</td>
+        <td class="no">Database attack surface</td>
+        <td class="yes">No DB, minimal surface area</td>
+      </tr>
+      <tr>
+        <td>Hosting cost</td>
+        <td class="no">Server needed ($5–$50/mo)</td>
+        <td class="yes">Free on GitHub Pages / Netlify</td>
+      </tr>
+      <tr>
+        <td>Non-dev editing</td>
+        <td class="yes">GUI admin panel</td>
+        <td class="meh">Markdown / headless CMS needed</td>
+      </tr>
+      <tr>
+        <td>Scalability</td>
+        <td class="meh">Needs caching plugins</td>
+        <td class="yes">Infinite scale via CDN</td>
+      </tr>
+      <tr>
+        <td>Best for</td>
+        <td>E-commerce, large teams, portals</td>
+        <td>Blogs, docs, portfolios, landing pages</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 7 – Summary & Links (Horizontal)
+  ═══════════════════════════════════════════════ -->
+  <section>
+    <h2>Summary &amp; Resources</h2>
+    <div style="font-size:0.65em; color:#ccc; margin: 0.8em auto; max-width:600px; text-align:left; line-height:1.9;">
+      <p>✦ SSGs convert source files into fast, secure, static websites</p>
+      <p>✦ Jekyll integrates natively with GitHub Pages — zero server setup</p>
+      <p>✦ Markdown + YAML + Liquid = the Jekyll authoring stack</p>
+      <p>✦ Reveal.js turns any HTML file into an interactive presentation</p>
+      <p>✦ JAMstack (JS · APIs · Markup) is the modern web architecture</p>
+    </div>
+
+    <div style="margin-top:1.2em;">
+      <a class="link-pill" href="https://anismessaoudi.github.io" target="_blank">🌐 Live Website</a>
+      <a class="link-pill" href="https://github.com/anisk11/anismessaoudi.github.io" target="_blank">📁 Source Repo</a>
+      <a class="link-pill" href="https://revealjs.com" target="_blank">📊 Reveal.js Docs</a>
+      <a class="link-pill" href="https://jekyllrb.com" target="_blank">🔮 Jekyll Docs</a>
+    </div>
+
+    <div style="margin-top:1.6em; font-size:0.5em; color:#666; font-family:'Courier New',monospace;">
+      Anis Messaoudi · 78060 · Internet Technologies Assignment 2 · May 2026
+    </div>
+  </section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<!-- Reveal.js core JS -->
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    transition: 'slide',
+    backgroundTransition: 'fade',
+    controls: true,
+    progress: true,
+    center: true,
+    plugins: [ RevealHighlight, RevealNotes, RevealMarkdown ]
+  });
+</script>
+</body>
+</html>
