@@ -1,0 +1,26 @@
+
+
+name: GitHub Actions Demo
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print greeting
+        run: echo "Hello from GitHub Actions! Triggered by a ${{ github.event_name }} event."
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: List files in the repository
+        run: ls ${{ github.workspace }}
+
+      - name: Print job status
+        run: echo "Job status is ${{ job.status }}."
